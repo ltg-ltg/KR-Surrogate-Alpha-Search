@@ -1,0 +1,43 @@
+# 롱온리·고비용 시장에서 대리 모델 기반 알파 탐색 — 한국 주식시장
+
+독립 연구. 선행 연구 Study 1(레포 `Surrogate-Alpha-Search`, 태그 `v1.0-results`)은 동기와 가설의 출처로만 인용한다.
+
+- 설계서: [docs/korea_study_design.md](docs/korea_study_design.md) (판정 규칙은 이 문서가 우선)
+- 진행 체크리스트: [docs/korea_study_checklist.md](docs/korea_study_checklist.md)
+- 선행 연구 비교: [docs/선행 연구 비교 정리 — 한국 롱온리 대리 모델 알파 탐색.md](<docs/선행 연구 비교 정리 — 한국 롱온리 대리 모델 알파 탐색.md>)
+
+## 구간 (설계서 6절)
+
+| 구간 | 기간 | 역할 |
+|---|---|---|
+| 버퍼 | 2010 | lookback 전용 |
+| IS | 2011~2017 | 학습 타깃, 통과 기준 ①③④, 리밸런싱 주기 결정 |
+| Test | 2018~2019 | 통과 기준 ② |
+| OOS | 2020~2023 | 단계 B에서 처음 연다 |
+| 예비 | 2024~ | **쓰지 않는다.** 데이터 폴더에 두지 않고 수집 코드도 받지 않는다 |
+
+## 데이터
+
+- 출처: **KRX 통계정보** (KRX Open API). 유가증권·코스닥 일별매매정보, 유가증권·코스닥 종목기본정보
+- KRX 약관상 제3자 제공이 금지돼 원시·가공 시세는 이 레포에 없다. 수집·가공 코드와 결과(지표, 그림)만 둔다
+- 데이터 위치: 레포 밖 `C:\kr_surrogate_alpha_search_data` (환경 변수 `KRSAS_DATA_ROOT`로 변경)
+  - `raw/krx/{service}/{YYYY}/{YYYYMMDD}.json.gz`: API 응답 `OutBlock_1` 그대로
+  - `raw/krx/_manifest.jsonl`: 파일별 sha256, 크기, 수집일, 엔드포인트, 수집 경로
+  - `raw/krx/_calendar.json`: 평일별 거래일 여부
+
+### 재현
+
+1. KRX Open API 키를 발급받고 위 4개 서비스를 이용 신청한다
+2. `.env.example`을 `.env`로 복사해 `KRX_OPEN_API`를 채운다
+3. `python -m src.ingest.collect` (하루 한도 안에서 나눠 받는다. 약 3,450거래일 × 4개 서비스)
+4. 공개된 원본 해시 목록과 대조한다 (해시 목록은 결과 공개 때 올린다)
+
+### 작성자 환경의 원본
+
+작성자는 같은 키로 2026-11-16~19에 받아 둔 원본(kr_quant_machine `src/ingest/krx_collect.py`, 커밋 84c811d)을
+`python -m src.ingest.import_local`로 옮겼다. 연구 기간 밖 파일은 옮기지 않았고, 파일 내용은 바꾸지 않았다.
+
+## 규칙
+
+- 사전 등록(`kr-prereg`) 뒤의 변경은 모두 "탐색"으로 표시한다
+- 연구 기간 밖 날짜는 `src.paths.check_date`가 막는다

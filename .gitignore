@@ -1,0 +1,9 @@
+.env
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+# KRX 원본·가공 시세는 레포에 두지 않는다 (약관: 제3자 제공 금지). 데이터는 KRSAS_DATA_ROOT에 있다
+data/
+*.json.gz
+*.parquet
