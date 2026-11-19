@@ -183,6 +183,51 @@ def collect(client: RightsClient, *, max_days: int | None = None) -> dict:
     return stats
 
 
+CORP_ACTION_CODES = {      # stckIssuRcd 중 수정 비율에 영향을 주는 것 (2026-11-19 전체 코드 목록 확인)
+    "101": "유상증자", "102": "무상증자", "201": "액면분할", "202": "액면병합", "205": "자본감소", "206": "합병",
+    "207": "회사분할", "208": "분할합병", "209": "주식분할", "210": "주식교환", "211": "주식이전",
+}
+
+
+def build_clean(write: bool = True) -> pd.DataFrame:
+    """원본을 기업 행위 단위(basDt, crno, stckIssuRcd) 한 행으로 펼친다. 권리행사사유별 날짜를 열로 둔다.
+
+    권리락일(03)·상장일(09)·주식발행일(07)·교부/유통일(08)·합병기일(31)만 열로 남긴다.
+    종목코드는 krsas.ingest.dart의 crno 대응표로 붙인다 (ticker 열, 대응 안 되면 NA).
+    """
+    keep = {"03": "ex_date", "07": "issue_date", "08": "deliver_date", "09": "list_date", "31": "merge_date"}
+    rows = []
+    for d in target_days():
+        for x in read_raw(d):
+            code = x.get("stckIssuRcd")
+            if code not in CORP_ACTION_CODES:
+                continue
+            rows.append({"bas_dt": x["basDt"], "crno": (x.get("crno") or "").strip(), "name": x.get("stckIssuCmpyNm"),
+                         "action": CORP_ACTION_CODES[code], "action_code": code, "par": x.get("stckParPrc"),
+                         "rgt": x.get("rgtExertRcd"), "rgt_date": x.get("rgtExertSttgDt")})
+    df = pd.DataFrame(rows)
+    key = ["bas_dt", "crno", "action_code"]
+    base = df.drop_duplicates(key)[key + ["name", "action", "par"]]
+    dates = df[df["rgt"].isin(keep)].drop_duplicates(key + ["rgt"]).pivot(index=key, columns="rgt", values="rgt_date")
+    out = base.merge(dates.rename(columns=keep).reset_index(), on=key, how="left")
+    for col in ["bas_dt", *keep.values()]:
+        if col not in out:
+            out[col] = pd.NaT
+        out[col] = pd.to_datetime(out[col], format="%Y%m%d", errors="coerce")
+    out["par"] = pd.to_numeric(out["par"], errors="coerce")
+    corp_map = data_root() / "clean" / "dart_corp.parquet"
+    if corp_map.exists():
+        m = pd.read_parquet(corp_map, columns=["ticker", "crno"]).dropna(subset=["crno"])
+        m = m[~m["crno"].duplicated(keep=False)]           # crno 하나에 종목 둘 이상이면 붙이지 않는다
+        out = out.merge(m, on="crno", how="left")
+    else:
+        out["ticker"] = pd.NA
+    out = out.sort_values(["bas_dt", "crno", "action_code"]).reset_index(drop=True)
+    if write:
+        out.to_parquet(data_root() / "clean" / "rights.parquet", index=False)
+    return out
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--max-days", type=int, default=None)
