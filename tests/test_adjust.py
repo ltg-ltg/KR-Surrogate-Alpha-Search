@@ -80,6 +80,22 @@ def test_reset_day_candidates():
     assert set(events.loc[events["resume"] | events["gap"], "ticker"]) == {"C", "E"}
 
 
+def test_halt_adjust_is_not_resume():
+    # F: 05-02 거래, 05-03 정지, 05-04 정지 중 10대 1 감자 반영(종가·기준가 같이 10배), 05-08 재개
+    days = ["20180502", "20180503", "20180504", "20180508"]
+    rows = {"20180502": [trd("F", 500, 0)], "20180503": [trd("F", 500, 0, open_=0, vol=0)],
+            "20180504": [trd("F", 5000, 0, open_=0, vol=0)], "20180508": [trd("F", 4000, -1000)]}
+    rows["20180504"][0]["CMPPREVDD_PRC"] = "0"
+    prices = pd.concat([to_frame(rows[d], TRD_COLS, d) for d in days], ignore_index=True)
+    infos = pd.concat([to_frame([info("F", "500", 10)], INFO_COLS, d) for d in days], ignore_index=True)
+    returns, _ = build(prices, infos, write=False)
+    f = returns.set_index("date")
+    halt_day, reopen = pd.Timestamp("2018-05-04"), pd.Timestamp("2018-05-08")
+    assert f.loc[halt_day, "halt_adjust"] and not f.loc[halt_day, "resume"] and f.loc[halt_day, "r_basic"] == 0
+    assert f.loc[halt_day, "ratio"] == pytest.approx(0.1)
+    assert not f.loc[reopen, "resume"]          # 재개일 기준가 = 직전 종가(5000)라 재설정 아님
+    assert f.loc[reopen, "r_basic"] == pytest.approx(-0.2)
+
 def test_sell_tax_steps():
     assert costs.sell_tax("kospi", "2019-05-29") == 0.0030
     assert costs.sell_tax("kospi", "2019-05-30") == 0.0025
