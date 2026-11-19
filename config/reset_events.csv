@@ -1,0 +1,129 @@
+event_date,ticker,name,kind,treatment,components,source,note
+2010-03-25,032930,에이스앤파트너스,spinoff,base_fallback,,미조사,분할합병·배정 비율 미조사 (유니버스 밖)
+2010-03-25,088800,에이스테크,spinoff,base_fallback,,미조사,분할합병·배정 비율 미조사 (유니버스 밖)
+2010-05-31,025530,SJM홀딩스,spinoff,total_return,self:auto;123700:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장) + DART 신설회사명",SJM
+2010-06-01,003350,한국화장품제조,spinoff,total_return,self:auto;123690:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",한국화장품
+2010-07-30,005620,대성지주,spinoff,total_return,self:auto;128820:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",대성산업
+2010-07-30,008930,한미홀딩스,spinoff,total_return,self:auto;128940:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",한미약품
+2010-07-30,025970,알덱스,spinoff,base_fallback,,미조사,분할합병·배정 비율 미조사 (유니버스 밖)
+2010-09-30,035760,CJ오쇼핑,spinoff,base_fallback,,미조사,분할합병·배정 비율 미조사 (유니버스 밖)
+2010-11-26,030190,NICE평가정보,spinoff,base_fallback,,미조사,분할합병·배정 비율 미조사 (유니버스 밖)
+2010-11-26,034310,NICE,spinoff,base_fallback,,미조사,분할합병·배정 비율 미조사 (유니버스 밖)
+2011-01-03,023760,한국캐피탈,spinoff,base_fallback,,미조사,분할합병·배정 비율 미조사 (유니버스 밖)
+2011-01-25,016800,퍼시스,spinoff,total_return,self:auto;134790:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",팀스
+2011-01-27,067160,나우콤,spinoff,base_fallback,,DART 신설회사명 윈스테크넷 (2011-05-02 상장),늦게 상장
+2011-02-01,014300,선진지주,spinoff,base_fallback,,DART 신설회사명 선진 (8거래일 뒤 상장). 자동 항등식 해(제이엔케이히터)는 우연,늦게 상장
+2011-02-01,024660,하림홀딩스,spinoff,base_fallback,,DART 신설회사명 하림 (2011-05-02 상장),늦게 상장
+2011-02-15,002840,미원상사,spinoff,total_return,self:auto;134380:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",미원화학
+2011-04-11,000060,메리츠화재,spinoff,base_fallback,,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장) (메리츠금융지주, 22거래일 뒤 상장)",신설회사가 늦게 상장 → 미래 가격을 쓰지 않으려고 KRX 기준가
+2011-06-10,004170,신세계,spinoff,total_return,self:auto;139480:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장) + DART 신설회사명",이마트
+2011-08-02,054800,아이디스홀딩스,spinoff,base_fallback,,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장) (아이디스, 36거래일 뒤 상장)",늦게 상장
+2011-08-11,004550,대우차판매,spinoff,base_fallback,,KRX: 존속 주식수 변화 없음 (s=1),존속 주식수 변화 없음(s=1)이지만 정지 중 다른 사건 가능성. 미조사라 KRX 기준가 (유니버스 밖)
+2011-11-28,033100,제룡전기,spinoff,base_fallback,,미조사,분할합병·배정 비율 미조사 (유니버스 밖)
+2011-12-05,000070,삼양홀딩스,spinoff,total_return,self:auto;145990:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",삼양사
+2012-02-17,018120,진로발효,reduction,total_return,self:auto;cash:4945,"DART 감자결정: 강제 유상소각 43%, 1주당 11,500원 (0.43×11,500 = 4,945원/구주)",유상감자. 주식수 비율만 쓰면 현금 분배를 손실로 센다
+2012-09-17,006840,AK홀딩스,spinoff,total_return,self:auto;161000:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",애경유화
+2012-10-04,000240,한국타이어월드와이드,spinoff,total_return,self:auto;161390:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",한국타이어
+2012-10-19,004840,DRB동일,spinoff,total_return,self:auto;163560:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",동일고무벨트
+2012-10-19,024720,한국콜마홀딩스,spinoff,total_return,self:auto;161890:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",한국콜마
+2012-11-08,001440,대한전선,reduction,total_return,self:auto,DART 감자결정: 7대 1 무상감자,균등 감자·병합 또는 액면 감액. 주식수 비율이 일반 주주 비율
+2013-03-25,003940,삼양제넥스,spinoff,total_return,self:auto;000070:0.1423758,DART 분할합병결정 외부평가: 1:0.1423758 (0.3617012×0.3936281),투자 부문 → 삼양홀딩스
+2013-03-28,002990,금호산업,reduction,total_return,self:auto,DART 감자결정: 7주를 1주로 병합 (7대 1 무상감자),균등 감자·병합 또는 액면 감액. 주식수 비율이 일반 주주 비율
+2013-04-08,000640,동아쏘시오홀딩스,spinoff,total_return,self:auto;170900:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",동아에스티
+2013-04-10,002780,진흥기업,reduction,total_return,self:0.3333333,"DART 감자결정: 최대주주·채권단 5대 1, 소액주주 3대 1 무상병합",차등감자. 일반(소액) 주주 기준 비율
+2013-05-13,031390,녹십자셀,reduction,total_return,self:auto,DART 감자결정: 10대 1 무상감자,균등 감자·병합 또는 액면 감액. 주식수 비율이 일반 주주 비율
+2013-08-29,035420,NAVER,spinoff,total_return,self:auto;181710:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",NHN엔터테인먼트
+2013-09-16,003490,대한항공,spinoff,total_return,self:auto;180640:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장) + DART 신설회사명",한진칼
+2013-11-06,002030,아세아,spinoff,total_return,self:auto;183190:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",아세아시멘트
+2013-11-22,067250,STX조선해양,reduction,total_return,self:0.3333333,"DART 감자결정: 최대주주 100대 1, 그 외 3대 1 무상감자",차등감자. 일반 주주 기준 비율
+2013-12-06,001630,종근당홀딩스,spinoff,total_return,self:auto;185750:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",종근당
+2014-01-24,010520,현대하이스코,spinoff,total_return,self:auto;004020:0.3894677,DART 분할합병결정 외부평가: 분할합병비율 1:0.3894677 (0.7156116×0.5442446),냉연 부문 → 현대제철
+2014-02-03,011160,두산건설,reduction,total_return,self:auto,DART 감자결정: 보통주 10주를 1주로 병합,균등 감자·병합 또는 액면 감액. 주식수 비율이 일반 주주 비율
+2014-04-07,044820,코스맥스비티아이,spinoff,total_return,self:auto;192820:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",코스맥스
+2014-05-22,053000,우리금융,spinoff,total_return,self:auto;192530:auto;192520:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",KJB금융지주·KNB금융지주
+2014-05-23,003070,코오롱글로벌,reduction,total_return,self:auto,DART 감자결정: 5대 1 병합,균등 감자·병합 또는 액면 감액. 주식수 비율이 일반 주주 비율
+2014-06-02,085660,차바이오텍,spinoff,total_return,self:auto;196450:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",차디오스텍
+2014-06-20,000700,한진해운홀딩스,spinoff,base_fallback,,미조사,분할합병·배정 비율 미조사 (유니버스 밖)
+2014-07-07,002410,범양건영,spinoff,base_fallback,,KRX: 존속 주식수 변화 없음 (s=1),존속 주식수 변화 없음(s=1)이지만 정지 중 다른 사건 가능성. 미조사라 KRX 기준가 (유니버스 밖)
+2014-08-08,007860,서연,spinoff,total_return,self:auto;200880:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",한일이화
+2014-10-06,060980,한라홀딩스,spinoff,total_return,self:auto;204320:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",만도
+2015-01-15,013570,디와이,spinoff,total_return,self:auto;210540:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",디와이파워
+2015-01-26,004150,한솔홀딩스,spinoff,total_return,self:auto;213500:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",한솔제지
+2015-02-06,077360,덕산하이메탈,spinoff,total_return,self:auto;213420:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",덕산네오룩스
+2015-04-03,121440,골프존유원홀딩스,spinoff,total_return,self:auto;215000:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",골프존
+2015-05-04,072870,메가스터디,spinoff,total_return,self:auto;215200:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",메가스터디교육
+2015-05-06,072470,우리산업홀딩스,spinoff,total_return,self:auto;215360:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",우리산업
+2015-07-24,009180,한솔로지스틱스,spinoff,base_fallback,,미조사,분할합병·배정 비율 미조사 (유니버스 밖)
+2015-07-27,028670,팬오션,reduction,total_return,self:auto,"DART DS005: 주식병합, 감자비율 20% (5주→4주, KRX 주식수 비율 0.798은 단주 차이)",균등 감자·병합 또는 액면 감액. 주식수 비율이 일반 주주 비율
+2015-08-07,036710,심텍홀딩스,spinoff,total_return,self:auto;222800:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",심텍
+2015-08-25,045660,에이텍,spinoff,total_return,self:auto;224110:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",에이텍티앤
+2015-09-04,014470,부방,spinoff,total_return,self:auto;225650:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",쿠첸
+2015-10-23,011760,현대상사,spinoff,total_return,self:auto;227840:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",현대씨앤에프
+2016-02-05,094840,슈프리마에이치큐,spinoff,total_return,self:auto;236200:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",슈프리마
+2016-05-02,030530,원익홀딩스,spinoff,total_return,self:auto;240810:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",원익IPS
+2016-05-09,011200,현대상선,reduction,total_return,self:auto,DART DS005: 7주를 1주로 병합,균등 감자·병합 또는 액면 감액. 주식수 비율이 일반 주주 비율
+2016-05-13,011160,두산건설,reduction,total_return,self:auto,"DART DS005: 액면 감액 5,000→500원, 주식수 같음",균등 감자·병합 또는 액면 감액. 주식수 비율이 일반 주주 비율
+2016-05-16,123420,선데이토즈,reduction,base_fallback,,"권리일정: 액면병합(2016-05-16 상장)과 무상증자(권리락 2016-05-10, 신주 2016-06-01 상장)가 같은 정지 구간",재개일 주식수에 무상 신주가 빠져 주식수 비율을 못 쓴다. KRX 기준가가 둘 다 반영
+2016-06-03,084110,휴온스글로벌,spinoff,total_return,self:auto;243070:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",휴온스
+2016-08-09,007540,샘표,spinoff,total_return,self:auto;248170:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",샘표식품
+2016-08-31,000230,일동홀딩스,spinoff,total_return,self:auto;249420:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",일동제약
+2016-09-23,010420,한솔PNS,spinoff,base_fallback,,미조사,분할합병·배정 비율 미조사 (유니버스 밖)
+2017-03-31,078070,유비쿼스홀딩스,spinoff,total_return,self:auto;264450:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",유비쿼스
+2017-04-07,054620,APS홀딩스,spinoff,total_return,self:auto;265520:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",AP시스템
+2017-04-11,005740,크라운해태홀딩스,spinoff,total_return,self:auto;264900:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",크라운제과
+2017-05-10,009540,현대중공업,spinoff,total_return,self:auto;267270:auto;267260:auto;267250:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",현대건설기계·현대일렉트릭·현대로보틱스
+2017-05-12,012320,경동인베스트,spinoff,total_return,self:auto;267290:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",경동도시가스
+2017-05-22,107590,미원홀딩스,spinoff,total_return,self:auto;268280:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",미원에스씨
+2017-05-25,049180,셀루메드,reduction,total_return,self:auto,DART DS005: 10주를 1주로 병합,균등 감자·병합 또는 액면 감액. 주식수 비율이 일반 주주 비율
+2017-06-05,005990,매일홀딩스,spinoff,total_return,self:auto;267980:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",매일유업
+2017-07-07,001800,오리온홀딩스,spinoff,total_return,self:auto;271560:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",오리온
+2017-07-10,088390,이녹스,spinoff,total_return,self:auto;272290:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",이녹스첨단소재
+2017-07-17,002620,제일파마홀딩스,spinoff,total_return,self:auto;271980:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",제일약품
+2017-10-30,002270,롯데푸드,spinoff,total_return,self:auto;004990:1.7370290,"DART 회사분할합병결정 (롯데칠성 등 4사, 1주당 배정주식수 표)",분할합병 → 롯데지주
+2017-10-30,004990,롯데지주,spinoff,total_return,self:1.7597;280360:auto,"KRX 주식수: 신설 롯데제과 4,209,102 / 14,214,000 = 0.29612, 존속 (1-0.29612)×2.5(액면 500→200)",존속 주식수는 분할합병 신주가 섞여 auto 불가
+2017-10-30,005300,롯데칠성,spinoff,total_return,self:auto;004990:8.3511989,DART 회사분할합병결정 (1주당 배정주식수 표),분할합병 → 롯데지주
+2017-10-30,023530,롯데쇼핑,spinoff,total_return,self:auto;004990:1.1844385,DART 회사분할합병결정 (1주당 배정주식수 표),분할합병 → 롯데지주
+2017-11-29,007340,디티알오토모티브,spinoff,total_return,self:auto;282690:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",동아타이어
+2017-12-05,029460,케이씨,spinoff,total_return,self:auto;281820:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",케이씨텍
+2017-12-08,027410,BGF,spinoff,total_return,self:auto;282330:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",BGF리테일
+2018-01-05,006120,SK디스커버리,spinoff,total_return,self:auto;285130:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",SK케미칼
+2018-01-11,192400,쿠쿠홀딩스,spinoff,total_return,self:auto;284740:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",쿠쿠홈시스
+2018-06-12,012630,HDC,spinoff,total_return,self:auto;294870:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",HDC현대산업개발
+2018-06-19,082740,HSD엔진,spinoff,total_return,self:auto;034020:0.2679522,DART DS005 cmpDvmgDecsn: 1:0.2679522 (0.5259404×0.5094726),투자 부문 → 두산중공업
+2018-07-13,004800,효성,spinoff,total_return,self:auto;298050:auto;298040:auto;298020:auto;298000:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",효성첨단소재;효성중공업;효성티앤씨;효성화학
+2018-08-06,003300,한일홀딩스,spinoff,total_return,self:auto;300720:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",한일시멘트
+2018-10-05,003030,세아제강지주,spinoff,total_return,self:auto;306200:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",세아제강
+2019-05-10,031980,피에스케이홀딩스,spinoff,total_return,self:auto;319660:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",피에스케이
+2019-10-18,000150,두산,spinoff,total_return,self:auto;336260:auto;336370:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",두산퓨얼셀·두산솔루스
+2020-01-21,002380,KCC,spinoff,total_return,self:auto;344820:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",케이씨씨글라스
+2020-05-18,095720,웅진씽크빅,reduction,total_return,self:auto;cash:371.875,"DART 감자결정: 강제 유상소각 12.5%, 1주당 2,975원 (0.125×2,975)",유상감자
+2020-05-21,008060,대덕,spinoff,total_return,self:auto;353200:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",대덕전자
+2020-06-05,035810,이지홀딩스,spinoff,total_return,self:auto;353810:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",이지바이오
+2020-08-06,036830,솔브레인홀딩스,spinoff,total_return,self:auto;357780:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",솔브레인
+2020-09-22,009410,태영건설,spinoff,total_return,self:auto;363280:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",티와이홀딩스
+2020-12-08,016250,SGC이테크건설,spinoff,base_fallback,,자동 항등식 해(앱코·클리노믹스)는 우연. 분할합병 상대 미조사,유니버스 밖
+2021-01-15,020560,아시아나항공,reduction,total_return,self:auto,DART DS005: 3주를 1주로 무상 병합 (무상균등감자),균등 감자·병합 또는 액면 감액. 주식수 비율이 일반 주주 비율
+2021-01-25,000210,DL,spinoff,total_return,self:auto;375500:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",DL이앤씨
+2021-03-15,013520,화승코퍼레이션,spinoff,total_return,self:auto;378850:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",화승알앤에이
+2021-05-21,007700,F&F홀딩스,spinoff,total_return,self:auto;383220:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",F&F
+2021-05-27,003550,LG,spinoff,total_return,self:auto;383800:auto,KRX 주식수 (LX홀딩스 액면이 달라 항등식은 액면 환산 필요),LX홀딩스
+2021-05-28,086520,에코프로,spinoff,total_return,self:auto;383310:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",에코프로에이치엔
+2021-07-21,042670,두산인프라코어,spinoff,total_return,self:auto;034020:0.4719929,DART DS005 cmpDvmgDecsn: 1:0.4719929 (0.6895026×0.6845412),투자 부문 → 두산중공업
+2021-08-10,010140,삼성중공업,reduction,total_return,self:auto,"DART DS005: 액면가 감액 무상감자 5,000→1,000원",균등 감자·병합 또는 액면 감액. 주식수 비율이 일반 주주 비율
+2021-09-10,089590,제주항공,reduction,total_return,self:auto,"DART DS005: 액면가 감액 무상감자 5,000→1,000원",균등 감자·병합 또는 액면 감액. 주식수 비율이 일반 주주 비율
+2021-10-26,042670,현대두산인프라코어,spinoff,reset,,"KRX: 액면 5000→1000, 주식수 같음",액면 감액(무상감자). 앞 분할합병과 권리일정 창이 겹쳐 분할로 잡힘
+2021-11-29,017670,SK텔레콤,spinoff,total_return,self:auto;402340:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",SK스퀘어
+2022-02-07,001440,대한전선,reduction,total_return,self:auto,DART DS005: 액면가 감액 무상감자 500→100원,균등 감자·병합 또는 액면 감액. 주식수 비율이 일반 주주 비율
+2022-10-07,106240,파인테크닉스,spinoff,total_return,self:auto;441270:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",파인엠텍
+2022-11-28,014830,유니드,spinoff,total_return,self:auto;446070:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",유니드비티플러스
+2023-01-31,003070,코오롱글로벌,spinoff,total_return,self:auto;450140:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",코오롱모빌리티그룹
+2023-02-17,012200,계양전기,spinoff,base_fallback,,미조사,분할합병·배정 비율 미조사 (유니버스 밖)
+2023-03-31,009830,한화솔루션,spinoff,total_return,self:auto;452260:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",한화갤러리아
+2023-04-10,005440,현대지에프홀딩스,spinoff,total_return,self:auto;453340:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",현대그린푸드
+2023-05-30,010060,OCI홀딩스,spinoff,total_return,self:auto;456040:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장) + DART 신설회사명",OCI
+2023-05-31,005950,이수화학,spinoff,total_return,self:auto;457190:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",이수스페셜티케미컬
+2023-06-16,001230,동국홀딩스,spinoff,total_return,self:auto;460850:auto;460860:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",동국씨엠;동국제강
+2023-07-28,000480,시알홀딩스,spinoff,total_return,self:auto;462520:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장) + DART 신설회사명",조선내화
+2023-09-15,011810,STX,spinoff,total_return,self:auto;465770:auto,"KRX 주식수 항등식 (존속 + 신설 = 1, 같은 날 상장)",STX그린로지스
+2023-09-21,078590,휴림에이텍,spinoff,base_fallback,,KRX: 존속 주식수 변화 없음 (s=1),존속 주식수 변화 없음(s=1)이지만 정지 중 다른 사건 가능성. 미조사라 KRX 기준가 (유니버스 밖)
+2023-10-23,077500,유니퀘스트,spinoff,base_fallback,,미조사,분할합병·배정 비율 미조사 (유니버스 밖)

@@ -231,7 +231,12 @@ def build_clean(write: bool = True) -> pd.DataFrame:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--max-days", type=int, default=None)
+    parser.add_argument("--build-clean", action="store_true", help="수집하지 않고 clean/rights.parquet만 만든다")
     args = parser.parse_args()
+    if args.build_clean:
+        out = build_clean()
+        print(f"권리일정 {len(out)}건, 종목 대응 {int(out['ticker'].notna().sum())}건")
+        return
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(name)s %(message)s")
     budget = CallBudget(DAILY_LIMIT, rights_dir() / "_call_budget.json")
     client = RightsClient(budget=budget)

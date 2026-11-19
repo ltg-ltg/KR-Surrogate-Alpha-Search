@@ -31,6 +31,9 @@
 2. `.env.example`을 `.env`로 복사해 `KRX_OPEN_API`를 채운다
 3. `python -m krsas.ingest.collect` (하루 한도 안에서 나눠 받는다. 약 3,450거래일 × 4개 서비스)
 4. 공개된 원본 해시 목록과 대조한다 (해시 목록은 결과 공개 때 올린다)
+5. 가공: `python -m krsas.ingest.clean` → `python -m krsas.ingest.adjust` (기본 공식) → `python -m krsas.ingest.dart`
+   (OpenDART 키, crno 대응표) → `python -m krsas.ingest.rights --build-clean` → `python -m krsas.ingest.reset`
+   (설계서 5.5절 재설정일 처리, 사건표 `config/reset_events.csv`) → `python -m krsas.validation` (단계 A 데이터 검증)
 
 ### 작성자 환경의 원본
 
