@@ -5,7 +5,7 @@
 - 엔드포인트: GetStockSecuritiesInfoService/getStockPriceInfo (2020-01-02 이후만 제공)
 - 표본: 2020~2023 분기마다 첫 거래일 16일. 대조 범위가 OOS와 겹치므로 원자료의 종가·거래량만 맞춘다
   (수식·포트폴리오 성과는 계산하지 않는다)
-- 키: .env의 DATA_GO_KR_API (권리일정과 같은 키, 서비스별 활용 신청 필요)
+- 키: .env의 DATA_GO_KR_API_2 (주식시세정보용으로 따로 받은 키). 없으면 DATA_GO_KR_API
 - 저장: {data_root}/raw/stockprice/{YYYYMMDD}.json.gz (응답 item 그대로), raw/stockprice/_manifest.jsonl
 """
 from __future__ import annotations
@@ -53,7 +53,7 @@ def fetch(bas_dd: str, key: str, session: requests.Session) -> list[dict]:
                 if "response" not in data:      # 게이트웨이 오류. 30 = 이 서비스에 활용 신청이 안 된 키
                     hdr = data.get("OpenAPI_ServiceResponse", {}).get("cmmMsgHeader", {})
                     if hdr.get("returnReasonCode") == "30":
-                        raise RuntimeError("DATA_GO_KR_API 키가 금융위원회_주식시세정보에 등록되지 않았습니다. "
+                        raise RuntimeError("키가 금융위원회_주식시세정보에 등록되지 않았습니다. "
                                            "공공데이터포털에서 활용 신청 후 다시 실행하세요")
                     raise ValueError(f"게이트웨이 오류 {hdr}")
                 body = data["response"]["body"]
@@ -75,7 +75,7 @@ def fetch(bas_dd: str, key: str, session: requests.Session) -> list[dict]:
 
 def collect() -> list[str]:
     load_dotenv(ROOT / ".env")
-    key = os.environ["DATA_GO_KR_API"].strip()
+    key = (os.environ.get("DATA_GO_KR_API_2") or os.environ["DATA_GO_KR_API"]).strip()
     session = requests.Session()
     pending = []
     for d in sample_dates():
