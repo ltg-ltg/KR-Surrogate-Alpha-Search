@@ -1,0 +1,3 @@
+[submodule "third_party/surrogate-alpha-search"]
+	path = third_party/surrogate-alpha-search
+	url = https://github.com/ltg-ltg/Surrogate-Alpha-Search.git

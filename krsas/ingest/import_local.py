@@ -1,8 +1,8 @@
 """이미 받아 둔 KRX 원본을 연구 데이터 폴더로 복사한다 (연구 기간 안 파일만).
 
-    python -m src.ingest.import_local --src C:\\kr_quant_machine\\data\\raw\\krx --via kr_quant_machine@84c811d
+    python -m krsas.ingest.import_local --src C:\\kr_quant_machine\\data\\raw\\krx --via kr_quant_machine@84c811d
 
-- 서비스 4개(src.ingest.krx.SERVICES)의 DATA_START~DATA_END 파일만 복사한다. 2024년 이후 파일은 건너뛴다
+- 서비스 4개(krsas.ingest.krx.SERVICES)의 DATA_START~DATA_END 파일만 복사한다. 2024년 이후 파일은 건너뛴다
 - 파일 내용은 바꾸지 않는다 (API 응답 그대로). 수정 시각을 보존하고 그 값을 수집일로 기록한다
 - 이미 같은 해시로 들어와 있는 파일은 다시 복사하지 않는다. 해시가 다르면 멈춘다 (raw는 고치지 않는다)
 - 휴장일 달력(_calendar.json)도 연구 기간 안 날짜만 옮긴다

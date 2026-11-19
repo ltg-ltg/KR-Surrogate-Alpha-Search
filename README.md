@@ -29,15 +29,25 @@
 
 1. KRX Open API 키를 발급받고 위 4개 서비스를 이용 신청한다
 2. `.env.example`을 `.env`로 복사해 `KRX_OPEN_API`를 채운다
-3. `python -m src.ingest.collect` (하루 한도 안에서 나눠 받는다. 약 3,450거래일 × 4개 서비스)
+3. `python -m krsas.ingest.collect` (하루 한도 안에서 나눠 받는다. 약 3,450거래일 × 4개 서비스)
 4. 공개된 원본 해시 목록과 대조한다 (해시 목록은 결과 공개 때 올린다)
 
 ### 작성자 환경의 원본
 
 작성자는 같은 키로 2026-11-16~19에 받아 둔 원본(kr_quant_machine `src/ingest/krx_collect.py`, 커밋 84c811d)을
-`python -m src.ingest.import_local`로 옮겼다. 연구 기간 밖 파일은 옮기지 않았고, 파일 내용은 바꾸지 않았다.
+`python -m krsas.ingest.import_local`로 옮겼다. 연구 기간 밖 파일은 옮기지 않았고, 파일 내용은 바꾸지 않았다.
+
+## Study 1 코드와 수식 풀
+
+- Study 1 레포는 `third_party/surrogate-alpha-search`에 git submodule로 두고 태그 `v1.0-results`(d2338b4)에 고정한다.
+  받을 때: `git clone --recurse-submodules` 또는 `git submodule update --init`
+- Study 1 코드가 최상위 패키지 `src`를 쓰므로 이 연구 패키지는 `krsas`다. `krsas.study1.ensure()`가 submodule을
+  경로에 넣고 고정 커밋인지 확인한다. 문법·정규형·연산자는 Study 1 것을 그대로 쓰고, 백테스트 엔진은 롱온리로 새로 짠다
+- 수식 풀 `pool_v1`(4만 개)은 Study 1 레포에 커밋돼 있지 않아 데이터 폴더 `study1/pool_v1.parquet`에 두고
+  `krsas.pool`의 파일 해시·내용 해시로 고정한다. Study 1 v1.0-results 코드로 다시 생성한 풀과의 대조는 `python -m krsas.pool --compare <파일>`
+- 설치: `python -m venv .venv` → `.venv/Scripts/python -m pip install -r requirements.txt` (Study 1 의존성 포함)
 
 ## 규칙
 
 - 사전 등록(`kr-prereg`) 뒤의 변경은 모두 "탐색"으로 표시한다
-- 연구 기간 밖 날짜는 `src.paths.check_date`가 막는다
+- 연구 기간 밖 날짜는 `krsas.paths.check_date`가 막는다

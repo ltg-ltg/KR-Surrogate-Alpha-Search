@@ -3,9 +3,9 @@ kr_quant_machine tests/test_krx.py에서 가져와 재설정일 후보 검사를
 import pandas as pd
 import pytest
 
-from src import costs
-from src.ingest.adjust import build
-from src.ingest.clean import INFO_COLS, TRD_COLS, to_frame
+from krsas import costs
+from krsas.ingest.adjust import build
+from krsas.ingest.clean import INFO_COLS, TRD_COLS, to_frame
 
 
 def trd(code, close, change, open_=None, vol=100):

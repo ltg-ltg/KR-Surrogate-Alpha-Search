@@ -1,6 +1,6 @@
 """KRX 원본 → 정제 테이블. 값은 고치지 않고 형만 맞춘다 (원주가 그대로).
 
-    python -m src.ingest.clean [--force]
+    python -m krsas.ingest.clean [--force]
 
 kr_quant_machine `src/ingest/krx_clean.py`(커밋 351ec2c)에서 가져와 서비스 4개와 연구 기간으로 좁혔다.
 

@@ -5,3 +5,12 @@ python-dotenv
 numpy
 pytest
 pyyaml
+# Study 1 (third_party/surrogate-alpha-search, v1.0-results) 의존성. 그쪽 pyproject.toml과 같다
+lxml
+scikit-learn
+lightgbm
+xgboost
+catboost
+optuna
+scipy
+numba

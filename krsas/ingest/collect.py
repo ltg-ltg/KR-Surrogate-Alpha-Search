@@ -1,7 +1,7 @@
 """KRX Open API 원본 수집 (재현자용): 연구 기간의 거래일마다 서비스 4개의 전 종목 단면을 받는다.
 
-    python -m src.ingest.collect                # 오늘 예산이 남는 만큼
-    python -m src.ingest.collect --max-days 5
+    python -m krsas.ingest.collect                # 오늘 예산이 남는 만큼
+    python -m krsas.ingest.collect --max-days 5
 
 - 대상: DATA_START ~ DATA_END 평일. 2024년 이후는 받지 않는다
 - 휴장일: 평일마다 CALENDAR_SERVICE를 먼저 부르고, 비어 있으면 _calendar.json에 휴장일로 적은 뒤 나머지를 건너뛴다
@@ -46,7 +46,7 @@ def target_days() -> list[str]:
     return [d.strftime("%Y%m%d") for d in pd.bdate_range(DATA_START, DATA_END)]
 
 
-def collect(client: KrxClient, *, max_days: int | None = None, via: str = "src.ingest.collect") -> dict:
+def collect(client: KrxClient, *, max_days: int | None = None, via: str = "krsas.ingest.collect") -> dict:
     cal = load_calendar()
     stats = {"days_done": 0, "holidays": 0, "files": 0, "stopped": None}
     pending: list[dict] = []

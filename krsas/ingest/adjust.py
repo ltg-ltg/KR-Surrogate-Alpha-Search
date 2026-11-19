@@ -1,6 +1,6 @@
 """기준가 기반 일별 수익률, 기업 이벤트, 기준가 재설정일 후보 (설계서 5.5절).
 
-    python -m src.ingest.adjust
+    python -m krsas.ingest.adjust
 
 kr_quant_machine `src/ingest/krx_adjust.py`(커밋 351ec2c)의 `price_ratios`·`classify`를 가져왔고,
 5.5절의 재설정일 후보 표시를 더했다.
