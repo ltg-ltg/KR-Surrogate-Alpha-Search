@@ -262,6 +262,27 @@ def check_universe(stats: pd.DataFrame, members: pd.DataFrame, df: pd.DataFrame,
     }
 
 
+# ---- 11 ---------------------------------------------------------------------------------------------------
+def check_truncation(n: int = 30, cut_date: str = "2015-06-30", seed: int = 1) -> dict:
+    """절단 테스트 (설계서 6.1절): 무작위 수식 n개의 시그널을 cut_date까지 자른 패널과 전체 패널로 계산해 비교."""
+    from . import panel as P
+    from . import signal as S
+    from .pool import load_pool
+
+    p = P.load()
+    t = int(p.dates.searchsorted(pd.Timestamp(cut_date), side="right"))
+    cut = p.truncated(t)
+    bad = []
+    for f in load_pool().sample(n, random_state=seed)["formula"]:
+        a = S.signal(f, p, p.member_main)[:t]
+        b = S.signal(f, cut, cut.member_main)
+        na = np.isnan(a)
+        if not (np.array_equal(na, np.isnan(b)) and np.allclose(a[~na], b[~na], rtol=1e-12, atol=0)):
+            bad.append(f)
+    return {"formulas": n, "cut_date": cut_date, "seed": seed, "mismatch": len(bad), "mismatch_formulas": bad,
+            "verdict": "통과" if not bad else "불일치 있음 → 원인을 고친 뒤 진행"}
+
+
 def _jsonable(o):
     if isinstance(o, dict):
         return {str(k): _jsonable(v) for k, v in o.items()}
@@ -296,6 +317,16 @@ def run(write: bool = True) -> dict:
 
 
 def main() -> None:
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--truncation", action="store_true", help="검증 11 절단 테스트만 (패널 캐시 필요)")
+    if parser.parse_args().truncation:
+        res = check_truncation()
+        out = out_dir() / "truncation.json"
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(json.dumps(res, ensure_ascii=False, indent=1), encoding="utf-8")
+        print(res["verdict"], res["mismatch"], "/", res["formulas"], "→", out)
+        return
     report = run()
     for k, v in report.items():
         print(k, "→", v.get("verdict", "") if isinstance(v, dict) else "")
