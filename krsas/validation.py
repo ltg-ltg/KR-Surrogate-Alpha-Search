@@ -283,6 +283,142 @@ def check_truncation(n: int = 30, cut_date: str = "2015-06-30", seed: int = 1) -
             "verdict": "통과" if not bad else "불일치 있음 → 원인을 고친 뒤 진행"}
 
 
+# ---- 12 ---------------------------------------------------------------------------------------------------
+HAND_SCENARIOS = {
+    # 세율 경계: 2019-05-29 체결은 0.30%, 2019-05-31 체결은 0.25% (코스피). 두 번째 리밸런싱에서 NAVER → LG화학
+    "tax_boundary": {"signals": {"2019-05-28": ["005930", "000660", "035420"], "2019-05-30": ["005930", "000660", "051910"]},
+                     "end": "2019-06-10"},
+    # 상장폐지 청산: 벽산건설 마지막 거래일 2014-04-24 (정리매매), 하위 구간 슬리피지
+    "delisting": {"signals": {"2014-04-15": ["002530", "005930"]}, "end": "2014-05-02"},
+    # 거래정지 재개: 경방 2016-10-11~27 정지. 정지 중 리밸런싱에서 빼면 재개일(10-28) 종가에 판다
+    "halt_resume": {"signals": {"2016-10-05": ["000050", "005930"], "2016-10-12": ["005930"]}, "end": "2016-11-04"},
+}
+
+
+def _hand_sim(sc: dict) -> pd.DataFrame:
+    """원자료 표(prices, returns, universe, costs.yaml)로 직접 계산한 일별 총수익·비용. 엔진 코드를 쓰지 않는다."""
+    from . import costs
+    root = clean_dir()
+    cfg = costs.load()
+    tickers = sorted({t for v in sc["signals"].values() for t in v})
+    start = min(sc["signals"])
+    px = pd.read_parquet(root / "prices", columns=["date", "ticker", "market", "volume"],
+                         filters=[("ticker", "in", tickers)])
+    rt = pd.read_parquet(root / "returns.parquet", columns=["date", "ticker", "r_adj"],
+                         filters=[("ticker", "in", tickers)])
+    df = px.merge(rt, on=["date", "ticker"])
+    df = df[(df["date"] >= start) & (df["date"] <= sc["end"])]
+    days = sorted(df["date"].unique())
+    last_day = px.groupby("ticker")["date"].max()
+    mem = pd.read_parquet(root / "universe.parquet")
+    mem = mem[mem["universe"] == "main"]
+    lvl = cfg["slippage"]["main_universe"]
+
+    def bucket(t, d):
+        m = mem[(mem["ticker"] == t) & (mem["eff"] <= d)]
+        return lvl[m.sort_values("eff")["bucket"].iloc[-1]] if len(m) else lvl["bottom"]
+    row = df.set_index(["date", "ticker"])
+    comm = cfg["commission"]
+    hold, cash, pending = {}, 1.0, set()
+    sig_days = {pd.Timestamp(k): v for k, v in sc["signals"].items()}
+    out = []
+    for i, d in enumerate(days):
+        g = 0.0
+        for t in list(hold):
+            r = row.loc[(d, t), "r_adj"] if (d, t) in row.index else np.nan
+            if np.isfinite(r):
+                g += hold[t] * r
+                hold[t] *= 1 + r
+        tot = cash + sum(hold.values())
+        cash /= tot
+        hold = {t: w / tot for t, w in hold.items()}
+        cost = {"tax": 0.0, "comm": 0.0, "slip": 0.0}
+
+        def sell(t, a, slip):
+            nonlocal cash
+            mkt = "kosdaq" if row.loc[(d, t), "market"] == "KOSDAQ" else "kospi"
+            tx = costs.sell_tax(mkt, d)
+            cost["tax"] += a * tx
+            cost["comm"] += a * comm
+            cost["slip"] += a * slip
+            cash += a * (1 - tx - comm - slip)
+            hold[t] -= a
+            if hold[t] <= 1e-15:
+                del hold[t]
+        tradable = lambda t: (d, t) in row.index and row.loc[(d, t), "volume"] > 0
+        for t in list(hold):                                       # 상장폐지 청산
+            if d == last_day[t] and d < px["date"].max():
+                sell(t, hold[t], lvl[cfg["slippage"]["delisting_liquidation"]])
+                pending.discard(t)
+        for t in list(pending):                                    # 밀린 매도
+            if t in hold and tradable(t):
+                sell(t, hold[t], bucket(t, d))
+                pending.discard(t)
+        prev = days[i - 1] if i else None
+        if prev in sig_days:                                        # 체결일
+            tgt = sig_days[prev]
+            tw = 1.0 / len(tgt)
+            for t in list(hold):
+                want = tw if t in tgt else 0.0
+                if hold[t] > want:
+                    if tradable(t):
+                        sell(t, hold[t] - want, bucket(t, d))
+                    elif want == 0.0:
+                        pending.add(t)
+            buys = {t: tw - hold.get(t, 0.0) for t in tgt if tradable(t) and hold.get(t, 0.0) < tw}
+            need = sum(a * (1 + comm + bucket(t, d)) for t, a in buys.items())
+            fill = 1.0 if need <= cash else max(cash, 0) / need
+            for t, a in buys.items():
+                a *= fill
+                cost["comm"] += a * comm
+                cost["slip"] += a * bucket(t, d)
+                cash -= a * (1 + comm + bucket(t, d))
+                hold[t] = hold.get(t, 0.0) + a
+        c = sum(cost.values())
+        if c:
+            cash /= 1 - c
+            hold = {t: w / (1 - c) for t, w in hold.items()}
+        out.append({"date": d, "gross": g, **{f"cost_{k}": v for k, v in cost.items()}})
+    return pd.DataFrame(out)
+
+
+def check_hand_calc() -> dict:
+    """검증 12: 실제 종목 시나리오에서 엔진(krsas.backtest)과 독립 계산(_hand_sim)을 맞춘다."""
+    from . import backtest as B
+    from . import panel as P
+    p = P.load()
+    st = B.make_setup(p, "main", "monthly")
+    col = {t: j for j, t in enumerate(p.tickers)}
+    res = {}
+    for name, sc in HAND_SCENARIOS.items():
+        hand = _hand_sim(sc)
+        reb = np.zeros(len(p.dates), dtype=bool)
+        target = np.zeros(p.member_main.shape, dtype=bool)
+        for dd, ts in sc["signals"].items():
+            r = p.dates.get_loc(pd.Timestamp(dd))
+            reb[r] = True
+            target[r, [col[t] for t in ts]] = True
+        out = B.simulate(target, reb, p.ret, p.tradable, p.last_row, st.sell_tax, st.slip, st.commission,
+                         st.delist_slip)
+        rows = p.rows(min(sc["signals"]), sc["end"])
+        eng = pd.DataFrame({"date": p.dates[rows], "gross": out[0][rows], "cost_tax": out[1][rows],
+                            "cost_comm": out[2][rows], "cost_slip": out[3][rows]})
+        m = hand.merge(eng, on="date", suffixes=("_hand", "_engine"))
+        diff = {k: float((m[f"{k}_hand"] - m[f"{k}_engine"]).abs().max()) for k in
+                ("gross", "cost_tax", "cost_comm", "cost_slip")}
+        net = lambda g, c: float(np.prod((1 + g) * (1 - c)) - 1)
+        res[name] = {"days": len(m), "max_abs_diff": diff,
+                     "cum_net_hand": net(m["gross_hand"], m[["cost_tax_hand", "cost_comm_hand", "cost_slip_hand"]].sum(axis=1)),
+                     "cum_net_engine": net(m["gross_engine"], m[["cost_tax_engine", "cost_comm_engine",
+                                                                 "cost_slip_engine"]].sum(axis=1)),
+                     "cost_days": m.loc[m[["cost_tax_hand", "cost_comm_hand", "cost_slip_hand"]].sum(axis=1) > 0,
+                                        ["date", "cost_tax_hand", "cost_comm_hand", "cost_slip_hand"]]
+                     .assign(date=lambda x: x["date"].dt.strftime("%Y-%m-%d")).round(8).to_dict(orient="records")}
+    res["verdict"] = "통과" if all(max(v["max_abs_diff"].values()) < 1e-10 for v in res.values()
+                                 if isinstance(v, dict)) else "불일치 있음"
+    return res
+
+
 def _jsonable(o):
     if isinstance(o, dict):
         return {str(k): _jsonable(v) for k, v in o.items()}
@@ -320,7 +456,18 @@ def main() -> None:
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument("--truncation", action="store_true", help="검증 11 절단 테스트만 (패널 캐시 필요)")
-    if parser.parse_args().truncation:
+    parser.add_argument("--hand", action="store_true", help="검증 12 실제 종목 손 계산 대조")
+    args = parser.parse_args()
+    if args.hand:
+        res = check_hand_calc()
+        out = out_dir() / "hand_calc.json"
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(json.dumps(_jsonable(res), ensure_ascii=False, indent=1, default=str), encoding="utf-8")
+        for k, v in res.items():
+            print(k, v if isinstance(v, str) else {"max_abs_diff": v["max_abs_diff"], "cum_net_hand": round(v["cum_net_hand"], 6),
+                                                   "cum_net_engine": round(v["cum_net_engine"], 6)})
+        return
+    if args.truncation:
         res = check_truncation()
         out = out_dir() / "truncation.json"
         out.parent.mkdir(parents=True, exist_ok=True)
