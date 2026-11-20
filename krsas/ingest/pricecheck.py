@@ -2,7 +2,7 @@
 
     python -m krsas.ingest.pricecheck          # 표본 날짜 원본 수집 + 대조 → {data_root}/validation/pricecheck.json
 
-- 엔드포인트: GetStockSecuritiesInfoService/getStockPriceInfo (2020-01-02 이후만 제공)
+- 엔드포인트: GetStockSecuritiesInfoService_V2/getStockPriceInfo_V2 (2020-01-02 이후만 제공)
 - 표본: 2020~2023 분기마다 첫 거래일 16일. 대조 범위가 OOS와 겹치므로 원자료의 종가·거래량만 맞춘다
   (수식·포트폴리오 성과는 계산하지 않는다)
 - 키: .env의 DATA_GO_KR_API_2 (주식시세정보용으로 따로 받은 키). 없으면 DATA_GO_KR_API
@@ -25,7 +25,8 @@ from ..paths import ROOT, check_date, data_root
 from .clean import clean_dir
 from .manifest import sha256
 
-ENDPOINT = "https://apis.data.go.kr/1160100/service/GetStockSecuritiesInfoService/getStockPriceInfo"
+# 2026-11-21: 옛 경로(service/GetStockSecuritiesInfoService)는 등록 키에도 30(미등록)을 낸다. V2 경로가 현재 서비스다
+ENDPOINT = "https://apis.data.go.kr/1160100/GetStockSecuritiesInfoService_V2/getStockPriceInfo_V2"
 PAGE_SIZE = 1000
 
 
