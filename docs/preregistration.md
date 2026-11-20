@@ -1,6 +1,6 @@
 # 사전 등록: 롱온리·고비용 시장에서 대리 모델 기반 알파 탐색 — 한국 주식시장 (단계 B)
 
-- 상태: **초안** (태그 `kr-prereg` 커밋 전). 태그를 단 뒤에는 이 문서와 설계서를 결과를 보고 바꾸지 않는다. 그 뒤의 모든 변경·추가 분석은 "탐색"으로 표시한다
+- 상태: **등록** (태그 `kr-prereg`, 2026-11-20). 이 문서와 설계서를 결과를 보고 바꾸지 않는다. 그 뒤의 모든 변경·추가 분석은 "탐색"으로 표시한다. 등록 뒤에 바꾸는 것은 8절 외부 등록 기록뿐이다
 - 작성: 2026-11-20
 - 기준 문서: 설계서 [korea_study_design.md](korea_study_design.md) (판정 규칙은 설계서가 우선이다. 이 문서는 설계서의 `[단계 A]` 값과 `[작성]` 항목을 채우고, 설계서가 정하지 않은 구현 세부를 고정한다)
 - 단계 A 근거: [stageA_report.md](stageA_report.md), [stageA_data_validation.md](stageA_data_validation.md), [stageA_values.md](stageA_values.md)
