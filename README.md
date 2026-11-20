@@ -2,6 +2,15 @@
 
 독립 연구. 선행 연구 Study 1(레포 `Surrogate-Alpha-Search`, 태그 `v1.0-results`)은 동기와 가설의 출처로만 인용한다.
 
+## 상태: 완료 (2026-11-21)
+
+- 사전 등록 `kr-prereg` (2026-11-20) → 단계 B 실행 → OOS 1회 (2026-11-20, 잠금). 단계 C는 생략했다
+- **주 결론: 가설 기각.** R1·R2는 사전 등록한 방향의 반대로 실패했다 (원시 타깃 모델이 무작위보다 고유 통과를 더 많이 찾았고, 잔차 타깃은 원시보다 적게 찾았다). R3은 비열등이었다
+- 결과: [docs/stageB_results.md](docs/stageB_results.md) (IS·Test 상세 [docs/stageB_is_test.md](docs/stageB_is_test.md)), 단계 A: [docs/stageA_report.md](docs/stageA_report.md)
+- 사전 등록: [docs/preregistration.md](docs/preregistration.md)
+
+## 문서
+
 - 설계서: [docs/korea_study_design.md](docs/korea_study_design.md) (판정 규칙은 이 문서가 우선)
 - 진행 체크리스트: [docs/korea_study_checklist.md](docs/korea_study_checklist.md)
 - 선행 연구 비교: [docs/선행 연구 비교 정리 — 한국 롱온리 대리 모델 알파 탐색.md](<docs/선행 연구 비교 정리 — 한국 롱온리 대리 모델 알파 탐색.md>)
@@ -53,4 +62,5 @@
 ## 규칙
 
 - 사전 등록(`kr-prereg`) 뒤의 변경은 모두 "탐색"으로 표시한다
+- OOS 결과 파일은 `krsas.oos`만 읽는다 (`tests/test_oos_lock.py`). OOS는 이미 한 번 실행해 잠겼다
 - 연구 기간 밖 날짜는 `krsas.paths.check_date`가 막는다
