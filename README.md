@@ -2,6 +2,15 @@
 
 독립 연구. 선행 연구 Study 1(레포 `Surrogate-Alpha-Search`, 태그 `v1.0-results`)은 동기와 가설의 출처로만 인용한다.
 
+## 상태: 완료 (2026-11-21)
+
+- 사전 등록 `kr-prereg` (2026-11-20) → 단계 B 실행 → OOS 1회 (2026-11-20, 잠금). 단계 C는 생략했다
+- **주 결론: 가설 기각.** R1·R2는 사전 등록한 방향의 반대로 실패했다 (원시 타깃 모델이 무작위보다 고유 통과를 더 많이 찾았고, 잔차 타깃은 원시보다 적게 찾았다). R3은 비열등이었다
+- 결과: [docs/stageB_results.md](docs/stageB_results.md) (IS·Test 상세 [docs/stageB_is_test.md](docs/stageB_is_test.md)), 단계 A: [docs/stageA_report.md](docs/stageA_report.md)
+- 사전 등록: [docs/preregistration.md](docs/preregistration.md)
+
+## 문서
+
 - 설계서: [docs/korea_study_design.md](docs/korea_study_design.md) (판정 규칙은 이 문서가 우선)
 - 진행 체크리스트: [docs/korea_study_checklist.md](docs/korea_study_checklist.md)
 - 선행 연구 비교: [docs/선행 연구 비교 정리 — 한국 롱온리 대리 모델 알파 탐색.md](<docs/선행 연구 비교 정리 — 한국 롱온리 대리 모델 알파 탐색.md>)
@@ -31,6 +40,9 @@
 2. `.env.example`을 `.env`로 복사해 `KRX_OPEN_API`를 채운다
 3. `python -m krsas.ingest.collect` (하루 한도 안에서 나눠 받는다. 약 3,450거래일 × 4개 서비스)
 4. 공개된 원본 해시 목록과 대조한다 (해시 목록은 결과 공개 때 올린다)
+5. 가공: `python -m krsas.ingest.clean` → `python -m krsas.ingest.adjust` (기본 공식) → `python -m krsas.ingest.dart`
+   (OpenDART 키, crno 대응표) → `python -m krsas.ingest.rights --build-clean` → `python -m krsas.ingest.reset`
+   (설계서 5.5절 재설정일 처리, 사건표 `config/reset_events.csv`) → `python -m krsas.validation` (단계 A 데이터 검증)
 
 ### 작성자 환경의 원본
 
@@ -50,4 +62,5 @@
 ## 규칙
 
 - 사전 등록(`kr-prereg`) 뒤의 변경은 모두 "탐색"으로 표시한다
+- OOS 결과 파일은 `krsas.oos`만 읽는다 (`tests/test_oos_lock.py`). OOS는 이미 한 번 실행해 잠겼다
 - 연구 기간 밖 날짜는 `krsas.paths.check_date`가 막는다

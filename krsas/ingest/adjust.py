@@ -14,14 +14,16 @@ kr_quant_machine `src/ingest/krx_adjust.py`(커밋 351ec2c)의 `price_ratios`·`
 
 재설정일 후보 (5.5절 탐지 규칙 중 지금 데이터로 판정할 수 있는 부분)
     listing    종목이 처음 나타난 날. 수익률 계산에서 제외한다 (r_basic = NaN)
-    resume     직전 거래일에 거래가 없었고(volume 0) 오늘 B_t ≠ 직전 종가인 날
+    resume     직전 거래일에 거래가 없었고(volume 0) 오늘 거래가 있으며(volume > 0) B_t ≠ 직전 종가인 날
+    halt_adjust 거래정지 중(어제·오늘 모두 volume 0) B_t ≠ 직전 종가인 날. 정지 중 감자·분할 등을 기준가에 반영한 날로,
+               종가도 같이 조정돼 r_basic = 0이다. 재설정일이 아니다 (2026-11-19 단계 A 검증 2: 187건)
     gap        직전 거래일에 그 종목이 응답에 없었고 오늘 B_t ≠ 직전 등장일 종가인 날
     ※ ① "권리일정정보에 같은 날 기업 행위가 없는 날" 판정과 처리 규칙 r_t = P_t / (P_{t-1} k_t) − 1은
       공공데이터포털 주식권리일정정보를 받은 뒤 넣는다. 그때까지 r_basic을 주 결과에 쓰지 않는다.
 
 산출물
-    {data_root}/clean/returns.parquet       date, ticker, close, base, prev_close, ratio, r_basic, adj_factor, listing, resume, gap
-    {data_root}/clean/corp_actions.parquet  date, ticker, name, prev_close, base, ratio, kind, resume, gap,
+    {data_root}/clean/returns.parquet       date, ticker, close, base, prev_close, ratio, r_basic, adj_factor, listing, resume, halt_adjust, gap
+    {data_root}/clean/corp_actions.parquet  date, ticker, name, prev_close, base, ratio, kind, resume, halt_adjust, gap,
                                             parval_prev, parval, shares_prev, shares
 """
 from __future__ import annotations
@@ -53,7 +55,9 @@ def price_ratios(prices: pd.DataFrame) -> pd.DataFrame:
     df["listing"] = df["prev_close"].isna()
     shifted = ok & (df["ratio"] != 1.0)
     df["gap"] = shifted & (df["date"].map(pos) - prev_pos > 1)
-    df["resume"] = shifted & ~df["gap"] & prev_vol.eq(0)
+    halted_before = shifted & ~df["gap"] & prev_vol.eq(0)
+    df["resume"] = halted_before & df["volume"].gt(0)
+    df["halt_adjust"] = halted_before & df["volume"].eq(0)
     df["r_basic"] = np.where(df["base"].gt(0) & ~df["listing"], close / df["base"] - 1, np.nan)
     return df
 
@@ -76,16 +80,16 @@ def build(prices: pd.DataFrame | None = None, share_info: pd.DataFrame | None = 
     df = price_ratios(prices)
     df["adj_factor"] = df.groupby("ticker")["ratio"].cumprod()
     returns = df[["date", "ticker", "close", "base", "prev_close", "ratio", "r_basic", "adj_factor",
-                  "listing", "resume", "gap"]].sort_values(["date", "ticker"]).reset_index(drop=True)
+                  "listing", "resume", "halt_adjust", "gap"]].sort_values(["date", "ticker"]).reset_index(drop=True)
 
-    events = df.loc[df["ratio"] != 1.0, ["date", "ticker", "name", "prev_close", "base", "ratio", "resume", "gap"]].copy()
+    events = df.loc[df["ratio"] != 1.0, ["date", "ticker", "name", "prev_close", "base", "ratio", "resume", "halt_adjust", "gap"]].copy()
     info = share_info[["date", "ticker", "parval", "shares"]].sort_values(["ticker", "date"], kind="stable")
     info = info.assign(parval=info["parval"].astype(float), shares=info["shares"].astype(float))
     info["parval_prev"] = info.groupby("ticker")["parval"].shift(1)
     info["shares_prev"] = info.groupby("ticker")["shares"].shift(1)
     events = events.merge(info, on=["date", "ticker"], how="left")
     events["kind"] = [classify(r) for r in events.itertuples()] if len(events) else []
-    events = events[["date", "ticker", "name", "prev_close", "base", "ratio", "kind", "resume", "gap",
+    events = events[["date", "ticker", "name", "prev_close", "base", "ratio", "kind", "resume", "halt_adjust", "gap",
                      "parval_prev", "parval", "shares_prev", "shares"]].sort_values(["date", "ticker"])
     events = events.reset_index(drop=True)
     if write:
@@ -98,7 +102,7 @@ def build(prices: pd.DataFrame | None = None, share_info: pd.DataFrame | None = 
 def main() -> None:
     returns, events = build()
     print("수익률 행", len(returns), "/ 이벤트", len(events), events["kind"].value_counts().to_dict(),
-          "/ 재설정일 후보 resume", int(returns["resume"].sum()), "gap", int(returns["gap"].sum()),
+          "/ 재설정일 후보 resume", int(returns["resume"].sum()), "halt_adjust", int(returns["halt_adjust"].sum()), "gap", int(returns["gap"].sum()),
           "/ 신규 상장", int(returns["listing"].sum()))
 
 
