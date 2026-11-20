@@ -132,9 +132,36 @@ def load(path: Path | None = None) -> Panel:
                  z["member_sens"], z["bucket_main"])
 
 
+def npy_dir() -> Path:
+    return data_root() / "panel" / f"panel_v{VERSION}_npy"
+
+
+def save_npy(p: Panel, path: Path | None = None) -> Path:
+    """작업자들이 mmap으로 같은 메모리를 나눠 쓰도록 배열마다 .npy로 저장한다."""
+    path = path or npy_dir()
+    path.mkdir(parents=True, exist_ok=True)
+    arrays = {"dates": p.dates.values.astype("datetime64[ns]"), "tickers": p.tickers, "scale": p.scale,
+              "valid": p.valid, "ret": p.ret, "tradable": p.tradable, "last_row": p.last_row, "kosdaq": p.kosdaq,
+              "member_main": p.member_main, "member_sens": p.member_sens, "bucket_main": p.bucket_main,
+              **{f"f_{k}": v for k, v in p.fields.items()}}
+    for k, v in arrays.items():
+        np.save(path / f"{k}.npy", np.ascontiguousarray(v))
+    return path
+
+
+def load_mmap(path: Path | None = None) -> Panel:
+    """save_npy로 저장한 패널을 읽기 전용 mmap으로 연다."""
+    path = path or npy_dir()
+    m = lambda k: np.load(path / f"{k}.npy", mmap_mode="r", allow_pickle=False)
+    return Panel(pd.DatetimeIndex(np.load(path / "dates.npy")), np.load(path / "tickers.npy"),
+                 {f: m(f"f_{f}") for f in FIELDS}, m("scale"), m("valid"), m("ret"), m("tradable"),
+                 np.load(path / "last_row.npy"), m("kosdaq"), m("member_main"), m("member_sens"), m("bucket_main"))
+
+
 def main() -> None:
     p = build()
     path = save(p)
+    save_npy(p)
     print(f"패널 {len(p.dates)}일 × {len(p.tickers)}종목 → {path}")
     print("주 유니버스 구성 수 범위", int(p.member_main.sum(1)[p.member_main.any(1)].min()),
           int(p.member_main.sum(1).max()), "/ 상장폐지 청산 종목", int((p.last_row < len(p.dates) - 1).sum()))
